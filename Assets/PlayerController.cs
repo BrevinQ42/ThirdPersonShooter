@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
 
     public Gun gun;
     private float shotCooldown;
+    private float walkCooldown;
+
+    public AudioSource walk1, walk2, walk3, walk4, walk5, walk6, walk7;
+    private List<AudioSource>  walkSounds;
+    private AudioSource randomWalk;
 
     void Start()
     {
@@ -28,6 +33,9 @@ public class PlayerController : MonoBehaviour
         mouseSens = 0.8f;
 
         shotCooldown = 0.0f;
+        walkCooldown = 0.0f;
+
+        walkSounds = new List<AudioSource>(){walk1, walk2, walk3, walk4, walk5, walk6, walk7};
     }
 
     void Update()
@@ -57,6 +65,14 @@ public class PlayerController : MonoBehaviour
             } else {
                 rb.velocity += transform.right * speed;
             }
+        }
+
+        // walk sounds
+        randomWalk = walkSounds[Random.Range(0,walkSounds.Count)];
+
+        if (isMoving && walkCooldown <= 0){
+            randomWalk.Play();
+            walkCooldown = 0.69f;
         }
 
         // prevent player from moving on the y-axis (up and down)
@@ -94,6 +110,10 @@ public class PlayerController : MonoBehaviour
 
         if (shotCooldown > 0){
             shotCooldown -= Time.deltaTime;
+        }
+
+        if (walkCooldown > 0){
+            walkCooldown -= Time.deltaTime;
         }
 
         // player input to shoot (left click)

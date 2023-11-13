@@ -18,6 +18,9 @@ public class Bullet : MonoBehaviour
 
     private int damage;
 
+    public ParticleSystem particleImpact;
+    public AudioSource bulletHit;
+
     void Start()
     {
         Setup();
@@ -32,7 +35,7 @@ public class Bullet : MonoBehaviour
         height = objTransform.localScale.y;
         length = objTransform.localScale.z;
 
-        if (y > -2){
+        if (y > -48){
             speed = 7.5f;
         } else {
             // if this is the original bullet, don't let it move
@@ -59,12 +62,8 @@ public class Bullet : MonoBehaviour
         z = objTransform.position.z;
 
         // if this is not the original,
-        if (y > -2){
-            if (x - width / 2 < -12.5f || x + width / 2 > 12.5f ||
-                y - height / 2 < 0 || y + height / 2 > 10 ||
-                z - length / 2 < -10 || z + length / 2 > 16){
-                Destroy(this.gameObject);
-            }
+        if (y > -48){
+            StartCoroutine(deleteObject());
         }
     }
 
@@ -72,7 +71,21 @@ public class Bullet : MonoBehaviour
     {
         Destroy(this.gameObject);
 
+        ParticleSystem newParticles = Instantiate(particleImpact.gameObject, objTransform.position, 
+            objTransform.rotation).GetComponent<ParticleSystem>();
+
+        newParticles.Emit(8);
+        if (newParticles.gameObject != null){
+            (newParticles.GetComponent<AudioSource>()).Play();
+        }
+
         Target target = other.gameObject.GetComponent<Target>();
         target.TakeDamage(damage);
+    }
+
+    IEnumerator deleteObject()
+    {
+        yield return new WaitForSeconds(2.4f);
+        Destroy(this.gameObject);
     }
 }

@@ -11,6 +11,8 @@ public class Gun : MonoBehaviour
     private Camera cam;
     private RaycastHit aimedTarget;
     private bool hasTarget;
+    public AudioSource shoot;
+    public ParticleSystem particleBurst;
 
     void Start()
     {
@@ -58,10 +60,16 @@ public class Gun : MonoBehaviour
         Bullet newBullet = Instantiate(Bullet.gameObject, bulletPos, 
                             new Quaternion(0,0,0,0)).GetComponent<Bullet>();
 
+        ParticleSystem newParticles = Instantiate(particleBurst.gameObject, bulletPos, 
+                            new Quaternion(0,0,0,0)).GetComponent<ParticleSystem>();
+
         if (hasTarget){
             newBullet.Rotate(objTransform.eulerAngles.x, objTransform.eulerAngles.y);
         } else {
             newBullet.Rotate(cam.transform.eulerAngles.x, cam.transform.eulerAngles.y);
         }
+
+        shoot.Play();
+        newParticles.Emit(4);
     }
 }
