@@ -7,12 +7,7 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
     private Transform objTransform;
 
-    private float x;
-    private float width;
     private float y;
-    private float height;
-    private float z;
-    private float length;
 
     private float speed;
 
@@ -31,12 +26,8 @@ public class Bullet : MonoBehaviour
         rb = this.gameObject.GetComponent<Rigidbody>();
         objTransform = this.gameObject.transform;
 
-        width = objTransform.localScale.x;
-        height = objTransform.localScale.y;
-        length = objTransform.localScale.z;
-
         if (y > -48){
-            speed = 7.5f;
+            speed = 10.0f;
         } else {
             // if this is the original bullet, don't let it move
             speed = 0.0f;
@@ -57,9 +48,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        x = objTransform.position.x;
         y = objTransform.position.y;
-        z = objTransform.position.z;
 
         // if this is not the original,
         if (y > -48){

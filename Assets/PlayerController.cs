@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private float speed;
 
     private Vector3 originalMousePos;
-    private float mouseSens;
+    public float mouseSens;
 
     public Gun gun;
     private float shotCooldown;
@@ -29,8 +29,6 @@ public class PlayerController : MonoBehaviour
         originalMousePos = Input.mousePosition;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
-
-        mouseSens = 0.8f;
 
         shotCooldown = 0.0f;
         walkCooldown = 0.0f;
